@@ -1,27 +1,3 @@
-### Variable declarations - FEEL FREE TO EDIT THESE ###
-DEFAULT_NUMBER_OF_NODES = 4
-DEFAULT_RAM_IN_MB = 1024
-DEFAULT_NUMBER_OF_CPUS = 1
-
-
-### Edit these to allow other machines in your network to access the VMs
-
-# Set to true to activate non-host access
-#  make sure no one else will be impacted by this, as VMs will have forced ip that could collide
-#  (typically you should be close to alone on the LAN, with a few machines, ie at home)
-# alternatively set use_dhcp to true to avoid this (at the cost of not knowing the IP in advance)
-PUBLIC_LAN = false
-USE_DHCP = false
-
-# Name of the host endpoint to serve as bridge to local network
-#  (if not found vagrant will ask the user for each node)
-DEFAULT_BRIDGE = "wlan0"
-
-# Base for IP in public network. %d replaced by node number, eg "192.168.1.10%d" to get 101, 102, ...
-#  (once again, be careful of potential ip collisions!)
-PUBLIC_IP_BASE = "192.168.1.10%d"
-
-
 ### These settings should only be changed when adding or removing certain versions
 IP_ADDRESSES = {
   "centos5"  => 110,
@@ -37,6 +13,18 @@ IP_ADDRESSES = {
   "ubuntu14" => 142,
   "windows"  => 150,
 
+  #Sync Gateway
+  "1.0.0"    => 200,
+  "1.0.1"    => 201,
+  "1.0.2"    => 202,
+  "1.0.3"    => 203,
+  "1.1.0"    => 205,
+  "1.1.1"    => 206,
+  "1.2.0"    => 210,
+  "1.2.1"    => 211,
+  "1.3.0-testing" => 215,
+
+  #Couchbase Server
   "1.8.1"    => 51,
   "2.0.1"    => 56,
   "2.1.1"    => 61,
@@ -60,7 +48,7 @@ IP_ADDRESSES = {
   "4.1.1"    => 111,
   "4.5.0"    => 150,
   "4.5.0-testing" => 151,
-  "cbdev"    => 200,
+  "cbdev"    => 190,
 }
 
 VAGRANT_BOXES = {
@@ -145,3 +133,55 @@ COUCHBASE_DOWNLOAD_LINKS = {
   "ubuntu12"   => "#{COUCHBASE_RELEASES}/#{VERSION}/couchbase-server-enterprise_#{VERSION}-ubuntu12.04_amd64",
   "ubuntu14"   => "#{COUCHBASE_RELEASES}/#{VERSION}/couchbase-server-enterprise_#{VERSION}-ubuntu14.04_amd64",
 }
+
+SYNC_GATEWAY_RELEASES = "http://packages.couchbase.com/releases/couchbase-sync-gateway"
+SYNC_GATEWAY_BUILD_NUMBER = "253"
+SYNC_GATEWAY_DOWNLOAD_LINKS = {
+  "generic" => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}_x86_64",
+  "1.0.0"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}_x86_64",
+  "1.0.1"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}_x86_64",
+  "1.0.2"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}_x86_64",
+  "1.0.3"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}_x86_64",
+  "1.1.0"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}-28_x86_64",
+  "1.1.1"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}-10_x86_64",
+  "1.2.0"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}-79_x86_64",
+  "1.2.1"   => "#{SYNC_GATEWAY_RELEASES}/#{VERSION}/couchbase-sync-gateway-enterprise_#{VERSION}-4_x86_64",
+  "1.3.0-testing" => "#{LATEST_BUILDS}/couchbase-sync-gateway/1.3.0/1.3.0-#{SYNC_GATEWAY_BUILD_NUMBER}/couchbase-sync-gateway-enterprise_1.3.0-#{SYNC_GATEWAY_BUILD_NUMBER}_x86_64",
+}
+
+### Variable declarations - FEEL FREE TO EDIT THESE ###
+case PRODUCT
+when "couchbase_server"
+  DEFAULT_NUMBER_OF_NODES = 4
+  NAME = "Couchbase Server"
+  SHORTNAME = "cb"
+  DOWNLOAD_LINKS = COUCHBASE_DOWNLOAD_LINKS
+  PORT = "8091"
+when "sync_gateway"
+  DEFAULT_NUMBER_OF_NODES = 2
+  NAME = "Sync Gateway"
+  SHORTNAME = "sg"
+  DOWNLOAD_LINKS = SYNC_GATEWAY_DOWNLOAD_LINKS
+  PORT = "4984"
+end
+
+DEFAULT_RAM_IN_MB = 1024
+DEFAULT_NUMBER_OF_CPUS = 1
+
+
+### Edit these to allow other machines in your network to access the VMs
+
+# Set to true to activate non-host access
+#  make sure no one else will be impacted by this, as VMs will have forced ip that could collide
+#  (typically you should be close to alone on the LAN, with a few machines, ie at home)
+# alternatively set use_dhcp to true to avoid this (at the cost of not knowing the IP in advance)
+PUBLIC_LAN = false
+USE_DHCP = false
+
+# Name of the host endpoint to serve as bridge to local network
+#  (if not found vagrant will ask the user for each node)
+DEFAULT_BRIDGE = "wlan0"
+
+# Base for IP in public network. %d replaced by node number, eg "192.168.1.10%d" to get 101, 102, ...
+#  (once again, be careful of potential ip collisions!)
+PUBLIC_IP_BASE = "192.168.1.10%d"
